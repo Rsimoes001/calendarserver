@@ -1,4 +1,5 @@
 
+
 # Telecontrol · Calendario de Tareas (estructura)
 
 Esta carpeta contiene una **estructura completa** para tu app Flask + FullCalendar.
@@ -48,3 +49,7 @@ El workflow `./.github/workflows/ci.yml`:
 
 ---
 > Autor: Área Telecontrol · Uso interno
+
+# calendarserver
+calendario
+
