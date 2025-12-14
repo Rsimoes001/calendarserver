@@ -1,0 +1,221 @@
+/* =============================================================================
+   📄 modals.css — Overlays y modales (Detalles, CROMO, Contraseñas)
+   ✔ Totalmente basado en tokens de base.css para soportar Light/Dark
+   ============================================================================= */
+
+/* Evitar FOUC / ocultar si está hidden */
+#details-modal[hidden],
+#cromo-modal[hidden],
+#change-pass-modal[hidden],
+#password-modal[hidden] { display: none !important; }
+
+/* ============================== DETALLES & CROMO ============================== */
+#details-modal,
+#cromo-modal{
+  position: fixed; inset: 0;
+  display: none;
+  background: var(--backdrop);
+  z-index: 15000;
+  backdrop-filter: blur(1px);
+}
+
+/* Abrir como overlay centrado si aria-hidden="false" */
+#details-modal[aria-hidden="false"],
+#cromo-modal[aria-hidden="false"]{
+  display: block;
+}
+
+/* Caja principal */
+#details-modal-content,
+#cromo-modal-content{
+  position: relative;
+  width: min(1020px, 96vw);
+  max-height: 88vh;
+  margin: 3vh auto;
+  background: var(--surface-elev);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+
+/* Permite variante ancha si el contenedor agrega .modal--wide */
+.modal--wide #details-modal-content{ width: min(1200px, 98vw); }
+
+/* ----------------------- Header / Footer ----------------------- */
+.modal-header{
+  position: sticky; top:0; z-index:2;
+  display:flex; align-items:center; justify-content:space-between;
+  gap:.75rem; padding:.9rem 1.1rem;
+  background: var(--surface-elev);
+  border-bottom:1px solid var(--divider);
+  color: var(--text);
+}
+.modal-title{ display:flex; align-items:center; gap:.5rem; font-weight:800; font-size:1.05rem; }
+.modal-actions{ display:flex; gap:.35rem; }
+.modal__divider{ margin:0; border:0; border-top:1px solid var(--divider); }
+.modal__actions{
+  padding:.9rem 1.1rem; border-top:1px solid var(--divider);
+  display:flex; justify-content:flex-end; gap:.5rem; background:var(--surface-elev);
+}
+
+/* ----------------------- Botones base ----------------------- */
+.btn{
+  display:inline-flex; align-items:center; gap:.4rem; padding:.48rem .8rem;
+  border-radius:10px; border:1px solid var(--btn-border);
+  background: color-mix(in srgb, var(--btn-bg) 80%, transparent);
+  color: var(--text); font-weight:600; font-size:.92rem; cursor:pointer;
+  transition: background-color .15s, border-color .15s, transform .04s;
+}
+.btn:hover{ background: color-mix(in srgb, var(--btn-bg) 65%, transparent); border-color: color-mix(in srgb, var(--btn-border) 70%, var(--accent)); }
+.btn:active{ transform: translateY(1px); }
+.btn--icon{ width:36px; height:36px; padding:0; display:inline-grid; place-items:center; }
+.btn--success{ background: color-mix(in srgb, var(--success) 18%, var(--btn-bg)); border-color: color-mix(in srgb, var(--success) 45%, var(--btn-border)); }
+.btn--success:hover{ background: color-mix(in srgb, var(--success) 26%, var(--btn-bg)); border-color: var(--success); }
+.btn--soft{ background: transparent; }
+.btn--xs{ height:28px; padding:.25rem .55rem; font-size:.85rem; border-radius:8px; }
+
+/* ----------------------- Badges ----------------------- */
+.badge{
+  display:inline-flex; align-items:center; height:22px; padding:0 .55rem; border-radius:999px;
+  font-size:.78rem; font-weight:800; letter-spacing:.01em;
+  border:1px solid var(--btn-border);
+  background: color-mix(in srgb, var(--surface-elev) 85%, transparent);
+  color: var(--text);
+}
+.badge--success{ border-color: color-mix(in srgb, var(--success) 55%, var(--btn-border)); background: color-mix(in srgb, var(--success) 16%, var(--surface-elev)); }
+.badge--info   { border-color: color-mix(in srgb, var(--accent)  55%, var(--btn-border)); background: color-mix(in srgb, var(--accent)  16%, var(--surface-elev)); }
+.badge--warn   { border-color: color-mix(in srgb, var(--warn)    55%, var(--btn-border)); background: color-mix(in srgb, var(--warn)    16%, var(--surface-elev)); color:#111; }
+.badge--danger { border-color: color-mix(in srgb, var(--danger)  55%, var(--btn-border)); background: color-mix(in srgb, var(--danger)  16%, var(--surface-elev)); }
+.badge--outline{ background: transparent; }
+
+/* ----------------------- Grilla de campos (KV) ----------------------- */
+.form-grid{
+  display:grid;
+  grid-template-columns: 220px 1fr;
+  gap: 10px 18px;
+  padding: 10px 16px 14px;
+  color: var(--text);
+}
+.kv{ display:contents; }
+.kv--span2{ grid-column: 1 / -1; display: grid; grid-template-columns: subgrid; }
+.kv__k{
+  color: var(--muted);
+  font-weight: 600;
+  padding: 8px 0;
+  border-bottom: 1px dashed color-mix(in srgb, var(--divider) 70%, transparent);
+}
+.kv__v{
+  color: var(--text);
+  padding: 8px 0;
+  border-bottom: 1px dashed color-mix(in srgb, var(--divider) 70%, transparent);
+  word-break: break-word;
+}
+.kv__v--mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; }
+.kv__inline{ display:inline-flex; align-items:center; gap:.5rem; }
+
+/* Inputs dentro del modal (modo edición) */
+.input{
+  width: 100%;
+  padding: .65rem .85rem;
+  border-radius: 10px;
+  border: 1px solid var(--input-border);
+  background: var(--input-bg);
+  color: var(--input-text);
+  outline: none;
+}
+.input--area{ min-height: 92px; resize: vertical; }
+.input--time{ width: 140px; }
+
+/* Rango de horario */
+.time-range{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.time-range .tr__sep{ opacity:.6; }
+
+/* Scrollbars solo dentro del contenido */
+#details-modal-content *::-webkit-scrollbar{ height:10px; width:10px; }
+#details-modal-content *::-webkit-scrollbar-thumb{
+  background: color-mix(in srgb, var(--border) 60%, #000);
+  border-radius: 12px; border:2px solid transparent; background-clip: padding-box;
+}
+
+/* ============================== CAMBIAR CONTRASEÑA ============================== */
+#change-pass-modal{
+  position: fixed; inset: 0;
+  background: var(--backdrop);
+  z-index: 16000; display: none; backdrop-filter: blur(1px);
+}
+#change-pass-modal[aria-hidden="false"]{
+  display: flex; align-items:center; justify-content:center;
+}
+#change-pass-modal .modal__content{
+  width: min(420px, 92vw);
+  background: var(--surface-elev); color: var(--text);
+  border: 1px solid var(--border); border-radius: 14px;
+  padding: 18px 18px; box-shadow: var(--shadow-lg);
+}
+#change-pass-modal .modal__title{ display:flex; align-items:center; gap:.5rem; font-weight:800; font-size:1.25rem; margin:0 0 6px; }
+#change-pass-modal .modal__subtitle{ color: var(--muted); margin:0 0 14px; line-height:1.35; }
+#change-pass-modal .form-styled .form-group{ margin-bottom: 10px; }
+#change-pass-modal .form-styled label{ display:block; font-weight:600; margin-bottom:4px; font-size:.92rem; }
+#change-pass-modal .form-styled .input{ width:100%; padding:.7rem .9rem; border-radius:10px; border:1px solid var(--input-border); background:var(--input-bg); color:var(--input-text); }
+#change-pass-modal .modal__actions{ display:flex; justify-content:flex-end; gap:8px; margin-top:12px; }
+
+/* ============================== INGRESAR CONTRASEÑA ============================== */
+#password-modal{
+  position: fixed; inset: 0;
+  background: var(--backdrop);
+  z-index: 17000; display: none; backdrop-filter: blur(1px);
+}
+#password-modal[aria-hidden="false"]{
+  display: flex; align-items:center; justify-content:center;
+}
+#password-modal .modal__content{
+  width: min(420px, 92vw);
+  background: var(--surface-elev); color: var(--text);
+  border: 1px solid var(--border); border-radius: 14px;
+  padding: 18px 18px 14px; box-shadow: var(--shadow-lg);
+}
+#password-modal .modal__title{ margin:0 0 6px; font-size:1.15rem; font-weight:800; }
+#password-modal .password-modal__message{ margin:0 0 10px; color: var(--muted); font-weight:600; line-height:1.35; }
+#password-modal .password-modal__input{
+  width: 100%; padding:.7rem .9rem; border-radius:10px;
+  border:1px solid var(--input-border); background: var(--input-bg); color: var(--input-text);
+  margin-bottom:12px;
+}
+#password-modal .password-modal__input::placeholder{ color: var(--input-placeholder); }
+#password-modal .password-modal__actions{ display:flex; justify-content:flex-end; gap:8px; }
+
+/* ============================== Utilidades ============================== */
+.hidden{ display:none !important; }
+
+
+/* === Paleta OSCURA (cuando está activo el modo oscuro) === */
+:root[data-theme="dark"]{
+  --m-bg:#0f172a; --m-surface:#111827; --m-text:#e5e7eb; --m-muted:#9ca3af;
+  --m-border:#243047; --m-accent:#60a5fa; --m-danger:#f87171; --m-success:#34d399; --m-warn:#fbbf24;
+  --btn-bg:#0b1220; --btn-bg-hover:#131c2e; --btn-border:#334155;
+  --input-bg:#0b1220; --input-text:#e5e7eb; --input-border:#1f2a44; --input-placeholder:#94a3b8;
+  --divider:#1f2a44; --shadow:0 12px 50px rgba(0,0,0,.45), 0 2px 10px rgba(0,0,0,.35);
+}
+
+/* === Paleta CLARA (cuando NO está en modo oscuro) === */
+:root:not([data-theme="dark"]){
+  --m-bg:#ffffff; --m-surface:#ffffff; --m-text:#111827; --m-muted:#475569;
+  --m-border:#e5e7eb; --m-accent:#3b82f6; --m-danger:#ef4444; --m-success:#10b981; --m-warn:#f59e0b;
+
+  /* Botones e inputs claros (evita el “relleno oscuro” de los iconos) */
+  --btn-bg:#f3f4f6; --btn-bg-hover:#e5e7eb; --btn-border:#cbd5e1;
+  --input-bg:#f9fafb; --input-text:#111827; --input-border:#d1d5db; --input-placeholder:#9ca3af;
+
+  --divider:#e5e7eb; --shadow:0 18px 40px rgba(0,0,0,.12);
+}
+
+
+/* Asegurar contraste en lectura */
+#details-modal-content,
+#details-modal-content .form-grid,
+#details-modal-content .kv__k,
+#details-modal-content .kv__v { opacity: 1; }

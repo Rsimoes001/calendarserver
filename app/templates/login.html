@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Ingresar</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="preload" as="image" href="{{ url_for('static', filename='img/logo-empresa.svg') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+</head>
+<body>
+  <main class="login-shell" aria-label="Acceso al sistema">
+    <form class="login-card" method="post" action="{{ url_for('login_post', **request.args) }}" novalidate>
+      <!-- BRAND -->
+      <header class="login-brand" aria-label="Marca">
+        <img class="brand-logo" alt="Logo de la empresa"
+             src="{{ url_for('static', filename='img/logo-edenor.png') }}"
+             onerror="this.src='{{ url_for('static', filename='img/logo-edenor.png') }}'">
+        <h1 class="brand-title">Iniciar sesión</h1>
+        <p class="brand-subtitle">Telecontrol · Calendario de Tareas</p>
+      </header>
+
+      <!-- FORM -->
+      <div class="login-fields">
+        <label for="username">Usuario</label>
+        <input id="username" name="username" autocomplete="username" required>
+
+        <label for="password">Contraseña</label>
+        <input id="password" type="password" name="password" autocomplete="current-password" required>
+
+        {% if error %}<div class="alert">{{ error }}</div>{% endif %}
+
+        <button class="btn-primary" type="submit">Entrar</button>
+
+        <div class="form-meta">
+          <label class="remember">
+            <input type="checkbox" name="remember" value="1">
+            <span>Mantener sesión</span>
+          </label>
+          <!-- <a href="#" class="muted">¿Olvidaste la contraseña?</a> -->
+        </div>
+      </div>
+
+      <!-- FOOTER -->
+      <footer class="login-footer">
+        <small>© {{ 2025 }} Área Telecontrol — Uso interno</small>
+      </footer>
+
+      <!-- THEME SWITCH -->
+      <div class="theme-row" style="justify-content:center; margin-top:16px;">
+        <label for="theme-toggle" class="theme-text">🌙 Tema oscuro</label>
+        <input type="checkbox" id="theme-toggle" class="switch-input">
+        <span class="switch-track"></span>
+      </div>
+    </form>
+  </main>
+</body>
+<script src="{{ url_for('static', filename='js/login.js') }}"></script>
+</html>

@@ -1,0 +1,120 @@
+/* =============================================================================
+   forms.css — layout unificado para formularios de modales (lectura/edición)
+   - 2 columnas consistentes (label + valor)
+   - compat con markup clásico: <label> + .value
+   - compat con markup nuevo: .form-grid + .kv (key–value)
+   ============================================================================= */
+
+/* ====== GRID BASE ====== */
+.form-grid {
+  padding: 1rem 1.1rem 1.25rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;      /* SIEMPRE 2 columnas */
+  gap: .75rem 1.25rem;
+  overflow: auto;
+}
+
+/* ====== MODO LECTURA ======
+   (antes había layouts de 4 columnas que rompían el modal) */
+.form-readonly {
+  display: grid;
+  grid-template-columns: 1fr 1fr !important;  /* forzar 2 col */
+  gap: .75rem 1.25rem !important;
+}
+
+/* ====== KEY–VALUE (markup nuevo) ====== */
+.kv { display: contents; }              /* usa subitems en la grilla */
+.kv__k {
+  grid-column: span 1;
+  color: var(--m-muted, #94a3b8);
+  font-size: .86rem;
+  line-height: 1.2;
+  padding-top: .3rem;
+  white-space: normal;
+}
+.kv__v {
+  grid-column: span 1;
+  font-size: .95rem;
+  line-height: 1.35;
+  color: var(--m-text, #e5e7eb);
+  word-break: break-word;
+}
+.kv--span2 .kv__k,
+.kv--span2 .kv__v { grid-column: 1 / -1; }
+
+/* Monoespaciado opcional para IDs/ajustes */
+.kv__v--mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+.kv__inline { display: inline-flex; align-items: center; gap: .5rem; }
+
+/* ====== MARKUP CLÁSICO (retrocompat)
+   <label>Texto</label><div class="value">Valor</div>
+   Reutiliza la misma grilla 2 columnas
+================================================== */
+.form-grid > label:not(.span-2),
+.form-readonly > label:not(.span-2) {
+  grid-column: span 1;
+  color: var(--m-muted, #94a3b8);
+  font-size: .86rem;
+  line-height: 1.2;
+  padding-top: .3rem;
+}
+.form-grid > .value,
+.form-readonly > .value {
+  grid-column: span 1;
+  font-size: .95rem;
+  line-height: 1.35;
+  color: var(--m-text, #e5e7eb);
+  word-break: break-word;
+}
+.form-grid > label.span-2,
+.form-grid > .value.span-2,
+.form-readonly > label.span-2,
+.form-readonly > .value.span-2 { grid-column: 1 / -1; }
+
+/* ====== CAMPOS ====== */
+.input,
+select.input,
+textarea.input {
+  width: 100%;
+  background: var(--input-bg, #0b1220);
+  color: var(--input-text, #e5e7eb);
+  border: 1px solid var(--input-border, #1f2a44);
+  border-radius: 10px;
+  padding: .55rem .7rem;
+  font-size: .95rem;
+  outline: none;
+  transition: border-color .15s ease, box-shadow .15s ease, background-color .15s ease;
+}
+.input::placeholder { color: var(--input-placeholder, #94a3b8); }
+.input:focus,
+select.input:focus,
+textarea.input:focus {
+  border-color: var(--m-accent, #60a5fa);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--m-accent, #60a5fa) 28%, transparent);
+}
+textarea.input { min-height: 90px; resize: vertical; }
+.input--time { width: 10.5rem; }
+
+select.input {
+  appearance: none; -webkit-appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%2399a3af' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right .6rem center;
+  background-size: 14px;
+  padding-right: 2rem;
+}
+
+/* Time range */
+.time-range { display: inline-flex; align-items: center; gap: .5rem; flex-wrap: wrap; }
+.tr__sep { opacity: .6; }
+.tr__none { display: inline-flex; align-items: center; gap: .4rem; margin-right: .5rem; }
+
+/* Helpers */
+.hidden { display: none !important; }
+
+/* ====== RESPONSIVE ====== */
+@media (max-width: 820px) {
+  .form-grid,
+  .form-readonly { grid-template-columns: 1fr !important; }
+  .input--time { width: 9.5rem; }
+}

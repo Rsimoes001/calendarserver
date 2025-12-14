@@ -1,0 +1,55 @@
+/* =============================================================================
+   📄 Archivo: calendar.css
+   🎯 Propósito:
+      - Overrides de FullCalendar
+      - Estilos de número de día y día actual
+      - Colores por tipo de evento
+      - Selectores Año/Mes
+      - Dark mode
+   ============================================================================= */
+
+.fc-daygrid-day-number {
+  display:inline-block; padding:4px 6px;
+  border:1px solid #ccc; border-radius:6px;
+  font-weight:700; font-size:14px;
+  background:#f0f0f0; color:#333;
+}
+.fc-day-today .fc-daygrid-day-number {
+  background:#ffecb3 !important; border:2px solid #ffc107; color:#000;
+}
+
+/* Eventos coloreados */
+.evento-ensayo { background:#4CAF50 !important; color:#fff !important; }
+.evento-ajuste { background:#2196F3 !important; color:#fff !important; }
+.evento-evento { background:#FFC107 !important; color:#000 !important; }
+.evento-actualizar  { background-color: #1f2acc !important; color: #fff !important; }
+.evento-funcionalidad  { background-color: #9C27B0 !important; color: #fff !important; }
+.evento-ausente { background:#FF7043 !important; color:#fff !important; font-style:italic; }
+
+/* Selects Año/Mes */
+.fc-year-select, .fc-month-select {
+  height:36px; line-height:36px; padding:0 12px; padding-right:28px;
+  border:1px solid #cbd5e1; border-radius:9999px;
+  background:#fff; font-size:14px; color:#334155; cursor:pointer;
+  appearance:none; -webkit-appearance:none;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%2364758b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+  background-repeat:no-repeat; background-position:right 8px center; background-size:14px;
+}
+.fc-year-select { width:90px; text-align:center; }
+.fc-month-select { width:130px; }
+
+/* Dark mode */
+:root[data-theme="dark"] .fc {
+  --fc-page-bg-color:#1e293b; --fc-border-color:#334155; --fc-text-color:#f1f5f9;
+}
+:root[data-theme="dark"] .fc .fc-daygrid-day.fc-day-today {
+  background-color: rgba(59,130,246,.2) !important;
+}
+
+
+/*Tamaño tipografia del calendario*/
+.fc {
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 14px;  /* tamaño general del calendario */
+  color: var(--app-text); /* usa tus variables */
+}

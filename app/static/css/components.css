@@ -1,0 +1,230 @@
+/* =============================================================================
+   📄 Archivo: components.css
+   🎯 Propósito:
+      - Componentes reutilizables: botones, buscador, contadores, filtros (toggles),
+        chips/estados, avatar + menú usuario, toggle de tema, selects Año/Mes
+   ============================================================================= */
+
+/* ========== Botones base ========== */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 6px; padding: 8px 14px; border: none; border-radius: 6px;
+  font-size: 14px; cursor: pointer; transition: background 0.2s ease;
+}
+.btn--primary { background: #4caf50; color: #fff; }
+.btn--primary:hover { background: #45a049; }
+.btn--success { background: var(--success); color: #fff; }
+.btn--danger  { background: var(--danger);  color: #fff; }
+
+/* Botón principal “Actualizar” (pill) */
+.btn-main{
+  display: inline-flex; align-items: center; gap: 8px;
+  height: 36px; padding: 0 14px; border-radius: 9999px; border: 1px solid transparent;
+  background: var(--primary); color: #fff; font-size: 14px; font-weight: 600;
+  cursor: pointer; box-shadow: 0 2px 6px rgba(15,23,42,0.12);
+  transition: background .15s ease, transform .05s ease, box-shadow .15s ease;
+}
+.btn-main:hover{ background: var(--primary-hover); box-shadow: 0 3px 10px rgba(15,23,42,0.16); }
+.btn-main:active{ transform: translateY(1px); }
+.btn-main .ic { display:inline-block; font-style:normal; opacity:.9; }
+
+/* Contador (pill) */
+.total-display{
+  display:inline-flex; align-items:center; gap:8px; height:36px; padding:0 12px;
+  border-radius:9999px; background: var(--pill-bg); color: var(--pill-fg);
+  border:1px solid var(--pill-bd); font-size:14px; font-weight:600; white-space:nowrap;
+}
+.total-display .ic { display:inline-block; font-style:normal; opacity:.9; }
+
+/* ========== Buscador compacto ========== */
+.search-compact { margin: 0; }
+.search-compact__input{
+  width: 260px; height: 36px; padding: 0 12px;
+  border: 1px solid #cbd5e1; border-radius: 9999px;
+  font-size: 14px; outline: none;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+.search-compact__input::placeholder{ color:#94a3b8; }
+.search-compact__input:focus{
+  border-color: #64748b;
+  box-shadow: 0 0 0 3px rgba(100,116,139,.15);
+}
+
+/* ========== Filtros → checkbox como toggle ========== */
+.filter { display:flex; align-items:center; gap:8px; cursor:pointer; user-select:none; font-size:14px; font-weight:500; color:#333; }
+.filter__label { flex: 1; }
+.filter__checkbox {
+  appearance: none; -webkit-appearance: none;
+  width:36px; height:20px; border-radius:20px; background:#ccc;
+  position: relative; cursor: pointer; outline:none; transition: background 0.3s ease;
+}
+.filter__checkbox:hover { background:#b0b8c1; }
+.filter__checkbox:checked { background:#64748b; }
+.filter__checkbox::before{
+  content:""; position:absolute; top:2px; left:2px; width:16px; height:16px;
+  background:#fff; border-radius:50%; transition: transform 0.3s ease;
+}
+.filter__checkbox:checked::before{ transform: translateX(16px); }
+
+/* ========== Chips/estados ========== */
+.chip { display:inline-block; padding:2px 8px; border-radius:999px; font-size:12px; font-weight:700; }
+.chip--yes        { background: var(--chip-ok-bg);   color: var(--chip-ok-fg); }
+.chip--no         { background: var(--chip-warn-bg); color: var(--chip-warn-fg); }
+.chip--state      { background: var(--chip-info-bg); color: var(--chip-info-fg); }
+.chip--ejecutado  { background: #e8f5e9; color: #1b5e20; }
+.chip--suspendido { background: #fdecea; color: #c62828; }
+.chip--programado { background: #e8f0fe; color: #1e40af; }
+
+/* Icon button pequeño (CROMO) */
+.icon-btn { border: 1px solid #d1d5db; background:#fff; padding:2px 6px; border-radius:6px; cursor:pointer; }
+.icon-btn:hover { background:#f3f4f6; }
+.carpeta-cell { text-align:center; }
+
+/* ========== Perfil (avatar + popover de usuario) ========== */
+.userbox{ position: relative; margin-left: 10px; }
+.userbtn{
+  display:flex; align-items:center; gap:8px;
+  padding:6px 10px; border:1px solid #dbe2ea; border-radius:999px;
+  background:#fff; cursor:pointer;
+}
+.userbtn:focus{ outline: none; box-shadow: 0 0 0 3px rgba(13,110,253,.15); }
+.user-short{ font-weight:600; font-size:.95rem; color:#1f2937; }
+.avatar{
+  width:28px; height:28px; border-radius:50%; object-fit:cover;
+  background: linear-gradient(135deg,#8ab4f8,#a78bfa); color:#fff; display:block;
+}
+.avatar--lg{ width:56px; height:56px; }
+
+.user-menu{
+  position:absolute; right:0; top:calc(100% + 8px);
+  width:260px;
+  background: var(--app-surface);
+  color: var(--app-text);
+  border:1px solid var(--border);
+  border-radius:14px;
+  box-shadow: var(--card-shadow);
+  padding:10px;
+  z-index: 3000; /* 🔼 corregido: antes 1000 */
+  transform-origin: top right; transform: scale(.98); opacity:0; pointer-events:none;
+  transition: opacity .15s ease, transform .15s ease, background-color .15s ease, color .15s ease, border-color .15s ease;
+}
+.user-menu[aria-hidden="false"]{ opacity:1; transform: scale(1); pointer-events:auto; }
+.user-menu::before{
+  content:""; position:absolute; right:16px; top:-7px; width:12px; height:12px;
+  background: var(--app-surface);
+  border-left:1px solid var(--border); border-top:1px solid var(--border);
+  transform: rotate(45deg);
+}
+.user-menu__header{
+  display:flex; align-items:center; gap:12px; padding:8px 8px 10px;
+  border-bottom:1px solid var(--border);
+}
+.user-name{ font-weight:700; color: var(--app-text); }
+.user-role{ color: var(--muted); font-size:.9rem; }
+.user-menu__actions{ padding:4px 4px; display:flex; flex-direction:column; gap:2px; }
+.user-menu a,
+.user-menu button,
+.menu-item{
+  width:100%; text-align:left; background: transparent; border:0;
+  padding:10px 10px; border-radius:10px; cursor:pointer; color: var(--app-text);
+  text-decoration:none; display:block; font: inherit;
+}
+.user-menu a:hover,
+.user-menu button:hover,
+.menu-item:hover{ background: rgba(0,0,0,.04); }
+:root[data-theme="dark"] .user-menu a:hover,
+:root[data-theme="dark"] .user-menu button:hover,
+:root[data-theme="dark"] .menu-item:hover{ background: rgba(255,255,255,.06); }
+.menu-item--danger,
+.user-menu .btn-logout{ color:#b00020; }
+
+/* ========== Toggle de tema (switch estilo iOS) ========== */
+.theme-row{
+  display:flex; align-items:center; justify-content:flex-start;
+  gap:.4rem; padding:4px 0; cursor:pointer; user-select:none;
+}
+.theme-row .theme-text{ color: var(--app-text) !important; font-size:.95rem; }
+.switch-input{ position:absolute; opacity:0; width:0; height:0; }
+.switch-track{
+  position: relative; width: 44px; height: 24px;
+  background: var(--border); border: 1px solid rgba(0,0,0,.08);
+  border-radius: 9999px; box-shadow: inset 0 0 0 1px rgba(0,0,0,.04);
+  transition: background .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+.switch-track::after{
+  content:""; position:absolute; top: 2px; left: 2px;
+  width: 20px; height: 20px; background: #fff; border-radius: 50%;
+  box-shadow: 0 1px 2px rgba(0,0,0,.25); transition: transform .2s ease;
+}
+.switch-input:checked + .switch-track{ background: #2563eb; border-color: rgba(37,99,235,.5); }
+.switch-input:checked + .switch-track::after{ transform: translateX(20px); }
+.switch-input:focus-visible + .switch-track{ box-shadow: 0 0 0 3px rgba(37,99,235,.35); }
+:root[data-theme="dark"] .switch-track{ background: #334155; border-color: rgba(255,255,255,.08); }
+
+/* ========== Controles de Año/Mes (toolbar) ========== */
+#calendar .fc-toolbar .fc-toolbar-chunk{
+  display: inline-flex; align-items: center; gap: .5rem;
+}
+#calendar .fc-toolbar .fc-toolbar-chunk:last-child { margin-left: auto; }
+.fc .fc-toolbar .fc-ym { display:inline-flex; align-items:center; gap:.6rem; margin-left:auto; }
+#calendar .fc-toolbar .fc-toolbar-chunk select {
+  background: var(--app-surface);
+  color: var(--app-text);
+  border: 1px solid var(--border);
+  border-radius: 9999px;
+  padding: .45rem .9rem;
+  font-size: .95rem;
+  outline: none;
+  margin-left: .5rem;
+}
+#calendar .fc-toolbar .fc-toolbar-chunk select:focus{
+  border-color:#2563eb;
+  box-shadow: 0 0 0 3px rgba(37,99,235,.25);
+}
+/* Estilo base (inputs personalizados) */
+#fc-year-select,
+#fc-month-select{
+  appearance: none; -webkit-appearance: none; -moz-appearance: none;
+  background: var(--app-surface);
+  color: var(--app-text);
+  border: 1px solid var(--border);
+  border-radius: 9999px;
+  height: 36px;
+  line-height: normal;
+  padding: 0 .9rem;
+  padding-right: 2.1rem;
+  font-size: 15px;
+  font-weight: 500;
+  outline: none;
+  transition: border-color .2s, box-shadow .2s, background-color .2s;
+  background-image:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right .6rem center;
+  background-size: 16px 16px;
+}
+#fc-year-select:focus,
+#fc-month-select:focus{
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37,99,235,.25);
+}
+#fc-month-select{ min-width: 130px; }
+
+/* Dark mode select */
+:root[data-theme="dark"] #calendar .fc-toolbar .fc-toolbar-chunk select,
+:root[data-theme="dark"] #fc-year-select,
+:root[data-theme="dark"] #fc-month-select{
+  background-color: #0b1220;
+  border-color: #253047;
+  color: #e5e7eb;
+}
+:root[data-theme="dark"] select option {
+  background-color: #0b1220;
+  color: #e5e7eb;
+}
+#fc-year-select:hover, #fc-month-select:hover{ background-color: rgba(0,0,0,.02); }
+:root[data-theme="dark"] #fc-year-select:hover,
+:root[data-theme="dark"] #fc-month-select:hover{ background-color: rgba(255,255,255,.04); }
+@supports (-ms-ime-align:auto) {
+  #fc-year-select, #fc-month-select { line-height: 1.2; }
+}

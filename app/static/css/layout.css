@@ -1,0 +1,305 @@
+/* =============================================================================
+   📄 Archivo: layout.css
+   🎯 Propósito:
+      - Contenedores principales, cabecera y título
+      - Paneles flotantes de acciones y filtros
+      - Ajustes responsive
+   ============================================================================= */
+
+/* ====== Tokens de tamaño para el panel vertical ====== */
+:root{
+  --panel-ctl-h: 30px;   /* alto de input y botones */
+  --panel-ctl-r: 12px;   /* borde redondeado */
+  --panel-ctl-px: 14px;  /* padding horizontal */
+}
+
+/* Contenedores principales */
+.calendar-container {
+  width: 100%;
+  max-width: 87vw;        /* hasta el 87% del ancho de pantalla */
+  margin: 0 auto;
+  overflow-x: visible;
+
+  /* ajustes para que no se tape */
+  padding-top: 0px;   /* deja espacio para .header-actions arriba */
+  padding-left: 70px; /* deja espacio para .filters-float a la izquierda */
+  padding-right: 70px;/* opcional, si el panel derecho se superpone */
+}
+.calendar { width: 100%; }
+
+.page-title { margin: 0 auto; text-align: center; font-size: 24px; font-weight: 700; }
+
+
+/* ==========================================================================
+   Panel flotante de header
+   ========================================================================== */
+/* ===== Header (bloque) ===== */
+.header { 
+  max-width: 1000px; 
+  margin: 0 auto 16px; 
+}
+
+.header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0px;
+}
+
+/* Título centrado */
+.header__bar { flex: 1; text-align: center; }
+
+/*Panel flotante de acciones*/
+.header__actions {
+  position: fixed;
+  top: 5px;
+  right: 5px;
+  width: clamp(140px, 18vw, 150px);
+
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  padding: 5px;
+  border-radius: 15px;
+  background: color-mix(in srgb, var(--surface-elev) 94%, transparent);
+  border: 1px solid var(--border);
+  box-shadow: var(--card-shadow);
+  backdrop-filter: saturate(140%) blur(2px);
+  z-index: 2000;
+}
+
+/* Search */
+.header__search { width: 100%; }
+
+.header__search-input {
+  width: 100%;
+  height: var(--panel-ctl-h);
+  padding: 5px 5px;
+  border: 1px solid var(--border);
+  border-radius: var(--panel-ctl-r);
+  background: var(--surface-elev, var(--app-surface));
+  color: var(--app-text);
+  font-size: 0.8rem;
+}
+
+/* Interruptores */
+.header__interruptor{
+  height: 40px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: color-mix(in srgb, var(--surface-elev) 86%, transparent);
+  border: 1px solid var(--border);
+  border-radius: var(--panel-ctl-r);
+  color: var(--text);
+  font-weight: 700;
+  justify-content: center;
+  font-size: 0.8rem;
+  text-align: center; 
+}
+
+/* Ajuste */
+.header__ajuste{
+  height: var(--panel-ctl-h);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: color-mix(in srgb, var(--surface-elev) 86%, transparent);
+  border: 1px solid var(--border);
+  border-radius: var(--panel-ctl-r);
+  color: var(--text);
+  font-weight: 700;
+  justify-content: center;
+  font-size: 0.8rem;
+  text-align: center; 
+}
+
+/* Botón Actualizar*/
+.header__refresh{
+  height: var(--panel-ctl-h);
+  border-radius: var(--panel-ctl-r);
+  padding: 0 var(--panel-ctl-px);
+  font-size: 0.8rem;
+  letter-spacing: .2px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  background: var(--surface-elev, var(--app-surface));
+  color: var(--app-text);
+  box-shadow: none;
+  border: 1px solid var(--border);
+  font-weight: 700;
+}
+
+/*User*/
+/* Botón de usuario (tamaños unificados) */
+.userbox{ width: 100%; }
+
+.userbox__btn{
+  -webkit-appearance: none;     /* botones en WebKit */
+  appearance: none;
+  text-decoration: none;        /* si es <a> */
+  border: 1px solid var(--border);
+  border-radius: var(--panel-ctl-r);
+  padding: 0 var(--panel-ctl-px);
+  height: var(--panel-ctl-h);
+  display: flex; align-items: center; gap: 10px;
+  justify-content: flex-start;
+  background: var(--surface);
+  color: var(--text);
+  font-size: .8rem; font-weight: 700;
+  box-sizing: border-box;
+  margin-right: left;
+}
+
+.userbox__btn:hover{
+  background: color-mix(in srgb, var(--surface) 90%, var(--surface-elev));
+  border-color: color-mix(in srgb, var(--border) 70%, var(--accent));
+}
+
+.userbox__btn:active{ transform: translateY(1px); }
+
+.userbox__avatar{ width: 24px; height: 24px; }
+
+.userbox__short{
+  color: var(--text) !important;
+  font-weight: 700;
+  opacity: 1 !important;
+}
+
+/* ==========================================================================
+   Panel flotante de filtros
+   ========================================================================== */
+/* Bloque */
+.filter {
+  background: var(--app-surface);
+  padding: 5px 5px;
+  border-radius: 15px;
+  border: 1px solid var(--border);
+  box-shadow: var(--card-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-family: Roboto, Arial, sans-serif;
+}
+
+/* Modificador (flotante) */
+.filter--float {
+  position: fixed;
+  top: 5px; left: 5px;
+  width: clamp(140px, 18vw, 150px); /* 150px fijo */
+  z-index: 2000;
+}
+
+/* Fila: 2 columnas (switch fijo + texto flexible) */
+.filter__item{
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  align-items: center;
+  column-gap: 2px;
+  width: 100%;
+  margin: 0; padding: 0;
+  /* los labels son inline por defecto, mejor que sean caja de bloque */
+  display: grid; /* ya está arriba, lo repito por claridad */
+}
+
+/* Que el input "respete" el ancho */
+.filter__checkbox{
+  justify-self: start;
+  margin: 0;
+  width: 44px; height: 22px;
+  box-sizing: content-box;
+  display: block;                 /* evita rarezas del inline */
+  -webkit-appearance: none;       /* si usás un switch custom */
+  appearance: none;               /* idem */
+  position: relative;             /* por si tu switch usa ::before/::after */
+}
+
+/* Si tu switch está dibujado con pseudo-elementos, asegurá el track fijo */
+.filter__checkbox::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  /* poné acá el fondo del track y que su ancho sea 100% del input */
+}
+.filter__checkbox::after{
+  content: "";
+  position: absolute;
+  top: 2px; left: 2px;
+  width: 18px; height: 18px;      /* “pomo” del switch */
+  border-radius: 50%;
+  /* translateX(...) al chequear, pero sin cambiar el ancho total */
+}
+
+/* Texto */
+.filter__label{
+  margin: 0;
+  color: var(--app-text);
+  font-size: 0.8rem;
+  line-height: 1.2;
+  white-space: nowrap;            /* evita cortes que “mueven” líneas */
+}
+
+/* ========================== Dark mode extras ========================== */
+:root[data-theme="dark"] .top-header { background: var(--app-surface); color: var(--app-text); }
+:root[data-theme="dark"] .btn-main { background: #2563eb; color: #fff; }
+:root[data-theme="dark"] input { background: #1e293b; border: 1px solid var(--border); color: var(--app-text); }
+:root[data-theme="dark"] .evento-ausente { background: #dc2626 !important; color: #fff !important; }
+:root[data-theme="dark"] .fc-daygrid-day:hover { background: rgba(255,255,255,0.05); cursor: pointer; }
+
+/* Tema oscuro para el panel vertical */
+:root[data-theme="dark"] .header__actions{
+  background: color-mix(in srgb, var(--surface-elev) 88%, transparent);
+  border-color: var(--border);
+  box-shadow: var(--card-shadow);
+}
+/* En oscuro, fondo un poco más claro en el chip de usuario */
+:root[data-theme="dark"] .userbox__btn{
+  background: color-mix(in srgb, var(--surface-elev) 92%, transparent);
+}
+
+.header__search-input,
+.header__interruptor,
+.header__ajuste,
+.header__refresh,
+.userbox__btn {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.header__actions{
+  overflow: hidden;             /* ✅ recorta cualquier 0.5–1px que se pase */
+}
+
+
+
+/*Ver esto*/
+/* 1) Posicionar el menú respecto al botón */
+.userbox { position: relative; }
+
+/* 2) Estilos base del dropdown (oculto por defecto) */
+.user-menu{
+  position: absolute;              /* anclado al .userbox */
+  top: calc(var(--panel-ctl-h) + 6px);  /* debajo del botón */
+  right: 0;
+  min-width: 180px;
+  background: var(--surface-elev, #101820);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 8px 0;
+  box-shadow: 0 10px 24px rgba(0,0,0,.25);
+  display: none;                   /* 🔒 oculto por defecto */
+  z-index: 4000;                   /* por encima del panel */
+}
+
+/* 3) Mostrar cuando el script pone aria-hidden="false" */
+.user-menu[aria-hidden="false"]{
+  display: block;                  /* ✅ ahora sí se ve */
+}
+
+/* 4) MUY IMPORTANTE: que el panel no recorte el dropdown */
+.header__actions{
+  overflow: visible;               /* en lugar de hidden */
+}

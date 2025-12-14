@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Calendario de tareas de Telecontrol: ensayos, ajustes, eventos y ausencias." />
+  <title>📅 Calendario de Tareas</title>
+
+  <!-- Estilos externos -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}?v=1" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}?v=1" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}?v=1" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/calendar.css') }}?v=1" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/modals.css') }}?v=4" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/forms.css') }}?v=1" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/utilities.css') }}?v=1" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}?v=1" />
+</head>
+<body>
+  <header class="header" role="banner">
+    <div class="header__inner">
+      <div class="header__bar">
+        <!--
+        <h1 class="page-title">📅 Calendario de Tareas</h1>
+        -->
+      </div>
+
+      <div class="header__actions" role="group" aria-label="Acciones del calendario">
+        <form class="header__search" role="search" onsubmit="return false;">
+          <input id="search-input" class="header__search-input"
+                type="text" placeholder="Buscar..." autocomplete="off" />
+        </form>
+
+        <span id="ensayo-counter" class="header__interruptor" aria-live="polite">
+          <i class="header__icon">📊</i> Interruptores 2025: 0
+        </span>
+
+        <span id="ajuste-counter" class="header__ajuste" aria-live="polite">
+          <i class="header__icon">📝</i> Ajustes
+        </span>
+        
+        <button id="refresh-btn" class="header__refresh" type="button" title="Actualizar">
+          <i class="header__icon">🔄</i> Actualizar
+        </button>
+
+        <!-- Perfil de usuario -->
+        <div class="userbox">
+          <button id="user-menu-btn" class="userbox__btn" aria-haspopup="menu" aria-expanded="false" title="Cuenta">
+            <img class="userbox__avatar" alt="" src="{{ url_for('static', filename='img/avatar-default.png') }}">
+            <span class="userbox__short">{{ username }}</span>
+          </button>
+
+          <div id="user-menu" class="user-menu" role="menu" aria-hidden="true">
+            <div class="user-menu__header">
+              <img class="avatar avatar--lg" alt="" src="{{ url_for('static', filename='img/avatar-default.png') }}">
+              <div class="user-id">
+                <div class="user-name">{{ username }}</div>
+                <div class="user-role">{{ role }}</div>
+              </div>
+            </div>
+
+            <div class="user-menu__actions">
+              <div class="menu-row">
+                <label class="theme-row">
+                  <input id="theme-toggle" type="checkbox" class="switch-input" />
+                  <span class="switch-track" aria-hidden="true"></span>
+                  <span class="theme-text">Modo oscuro</span>
+                </label>
+              </div>
+              <a href="#" id="open-change-pass" class="menu-item">Cambiar contraseña</a>
+              <form method="post" action="{{ url_for('logout') }}">
+                <button role="menuitem" type="submit" class="menu-item menu-item--danger">Salir</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Panel de filtros -->
+  <aside class="filter filter--float" role="group" aria-label="Filtrar por tipo de tarea">
+    <label class="filter__item"><input type="checkbox" class="filter__checkbox filtro-tarea" value="ENSAYO" checked /><span class="filter__label">Ensayo</span></label>
+    <label class="filter__item"><input type="checkbox" class="filter__checkbox filtro-tarea" value="AJUSTE" checked /><span class="filter__label">Ajuste</span></label>
+    <label class="filter__item"><input type="checkbox" class="filter__checkbox filtro-tarea" value="EVENTOS" checked /><span class="filter__label">Evento</span></label>
+    <label class="filter__item"><input type="checkbox" class="filter__checkbox filtro-tarea" value="FUNCIÓN" checked /><span class="filter__label">Funcionalidad</span></label>
+    <label class="filter__item"><input type="checkbox" class="filter__checkbox filtro-tarea" value="ACTUALIZAR" checked /><span class="filter__label">Actualización</span></label>
+  </aside>
+
+  <!-- Calendario -->
+  <main class="calendar-container" role="main">
+    <div id="calendar" class="calendar" aria-label="Calendario de tareas"></div>
+  </main>
+
+  <!-- Modal Detalles -->
+  <div id="details-modal" class="modal" hidden aria-hidden="true" role="dialog" aria-modal="true" aria-label="Detalle de tarea">
+    <div id="details-modal-content" class="modal__content"></div>
+    <button id="details-modal-close" class="btn btn--danger modal__close" type="button">Cerrar</button>
+  </div>
+
+  <!-- Modal CROMO -->
+  <div id="cromo-modal" class="modal" hidden aria-hidden="true" style="z-index:1200;">
+    <div class="modal-box">
+      <div id="cromo-modal-content"></div>
+    </div>
+  </div>
+
+ <!-- Modal Contraseña -->
+  <div id="password-modal" class="password-modal" hidden aria-hidden="true" role="dialog" aria-modal="true" aria-label="Validación de contraseña">
+    <div class="modal__content">
+      <h2 class="modal__title">🔐 Confirmar acción</h2>
+      <p id="password-message" class="password-modal__message">Ingrese la contraseña:</p>
+      <input id="password-input" class="password-modal__input" type="password" placeholder="Contraseña" aria-label="Contraseña" />
+      <div class="password-modal__actions">
+        <button id="password-cancel" class="btn btn--soft" type="button">Cancelar</button>
+        <button id="password-accept" class="btn btn--success" type="button">Aceptar</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Modal Cambiar Contraseña (overlay propio) -->
+  <div id="change-pass-modal" hidden aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal__content">
+      <h2 class="modal__title">🔑 Cambiar contraseña</h2>
+      <p class="modal__subtitle">La nueva contraseña debe tener al menos <b>8 caracteres</b>.</p>
+      <form id="change-pass-form" class="form-styled">
+        <div class="form-group"><label for="current-pass">Contraseña actual</label><input id="current-pass" class="input" type="password" name="actual" required></div>
+        <div class="form-group"><label for="new-pass">Nueva contraseña</label><input id="new-pass" class="input" type="password" name="nueva" required></div>
+        <div class="form-group"><label for="repeat-pass">Repetir nueva contraseña</label><input id="repeat-pass" class="input" type="password" name="repetir" required></div>
+        <div id="change-pass-msg" class="alert" style="display:none;"></div>
+        <div class="modal__actions">
+          <button type="button" id="change-pass-cancel" class="btn btn--danger">Cancelar</button>
+          <button type="submit" class="btn btn--success">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script defer src="{{ url_for('static', filename='fullcalendar/main.min.js') }}"></script>
+  <script defer src="{{ url_for('static', filename='fullcalendar/locales-all.min.js') }}"></script>
+  <script type="module" src="{{ url_for('static', filename='js/app.js') }}?v=5"></script>
+</body>
+</html>

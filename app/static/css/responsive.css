@@ -1,0 +1,13 @@
+/* =============================================================================
+   📄 Archivo: responsive.css
+   🎯 Propósito:
+      - Ajustes por breakpoints chicos (móviles)
+   ============================================================================= */
+
+@media (max-width: 640px) {
+  .kv { grid-template-columns: 120px 1fr; }
+  .note { grid-column: 1 / -1; }
+}
+
+
+
