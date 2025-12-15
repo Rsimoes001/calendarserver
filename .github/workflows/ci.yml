@@ -33,7 +33,7 @@ jobs:
       #    args: --severity-threshold=high
 
   docker-build:
-    runs-on: ubuntu-latest
+    runs-on: rsimoes
     needs: [ python-ci ]
     steps:
       - name: Checkout
